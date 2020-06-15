@@ -32,7 +32,7 @@ LinkedList::LinkedList(const LinkedList &copia)
 }
 
 
-//Eliminar un nodo de cualquier posición del arreglo:
+//Eliminar un nodo de cualquier posiciÃ³n del arreglo:
 void LinkedList::remove(const int pos)
 {
 	int posicion = pos;
@@ -42,7 +42,7 @@ void LinkedList::remove(const int pos)
         Node *temp = head;
         head = head->next;
         delete temp;
-        return;//Para no ejecutar los demás pasos
+        return;//Para no ejecutar los demÃ¡s pasos
     }
     
     Node *puntero = head;
@@ -76,7 +76,7 @@ void LinkedList::print()
 }
 
 
-//Insertar un nodo en la posición adecuada (para que esté ordenado)
+//Insertar un nodo en la posiciÃ³n adecuada (para que estÃ© ordenado)
 void LinkedList::insert(const Node &n)
 {
 	Node *new_node = new Node(n);
@@ -84,50 +84,41 @@ void LinkedList::insert(const Node &n)
 	if (size == 0) 
 	{
 		head = new_node;
+		size++;
+		return;
 	}
 	
-	int status = -1;
 	Node *puntero = head;
 	Node *aux_puntero = head;
 	
 	int new_value = new_node->getElem();
 	int pointer_value = puntero->getElem();
 	
-	if ( new_value < pointer_value ) { status = 1; }
-	
-	for (int k = 0; k < size; k++)
-	{
-		aux_puntero = puntero;
-		puntero = puntero->next;
-		pointer_value = puntero->getElem();
-		
-		if ( new_value < pointer_value) 
-		{
-			break; 
-		}
-		
-		if ( k == size - 1 && new_value > pointer_value ) { status = 3; }
-	
-	}
-	
-	if(status == 1)
+	if ( new_value < pointer_value )
 	{
 		new_node->next = head;
-		head = new_node; 
+		head = new_node;
+		
+		size++;
+		return;
 	}
 	
-	else if (status == 3)
+	for (int k = 0; k < size-1; k++)
 	{
-		puntero->next = new_node;
-		new_node->next = NULL;
+		pointer_value = puntero->next->getElem();
+		
+		if ( new_value <= pointer_value) 
+		{
+			new_node->next = puntero->next;
+			puntero->next = new_node;
+			size++;
+			return;
+		}
+		puntero = puntero->next;
 	}
 	
-	else
-	{
-		aux_puntero->next = new_node;
-		new_node->next = puntero;
-	}
-	
+	puntero->next = new_node;
+	new_node->next = NULL;
 	size++;
 }
 
